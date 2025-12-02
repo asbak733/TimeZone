@@ -56,6 +56,7 @@
     .clock:hover {
       transform: scale(1.05);
     }
+
     /* Clock card gradients */
     .clock:nth-child(1) { background: linear-gradient(135deg, #FFD700, #FFA500); } 
     .clock:nth-child(2) { background: linear-gradient(135deg, #4facfe, #00f2fe); color: #222;} 
@@ -97,6 +98,27 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       text-align: left;
     }
+
+    /* ⭐ ADDED: Floating Request Button */
+    #feedback-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #222;
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 28px;
+      font-size: 15px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+      z-index: 9999;
+    }
+    #feedback-btn:hover {
+      background: #444;
+    }
+
   </style>
 </head>
 <body>
@@ -159,6 +181,12 @@
       Note: Not all time zones observe DST (e.g., AST, HST, AKST). Please adjust accordingly.
     </p>
   </div>
+
+  <!-- ⭐ ADDED: Feedback Button -->
+  <button id="feedback-btn"
+    onclick="window.open('https://app.smartsheet.com/b/form/010b97732b974e3bb484f5efaddd2d82','_blank','noopener')">
+    ✨ Request City / Feedback
+  </button>
 
   <script>
     const timeZones = {
@@ -271,7 +299,7 @@
       "Norton": "America/New_York",
       "Oakland": "America/Los_Angeles",
       "Oklahoma City": "America/Chicago",
-      "Omaha": "America/Chicago",
+      "Oмаха": "America/Chicago",
       "Ontario": "America/Los_Angeles",
       "Orlando": "America/New_York",
       "Pennsauken": "America/New_York",
