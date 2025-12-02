@@ -88,34 +88,23 @@
     text-align: left;
   }
 
-  /* Request City + Feedback Box */
-  #request-box {
-    margin-top: 20px;
-    padding: 20px;
-    background: #ffffff;
-    width: 340px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    display: none;
-    text-align: left;
-  }
-
-  #request-box input, #request-box textarea, #request-box button {
-    width: 95%;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
-
-  #request-box button {
+  /* Floating Feedback Button */
+  #feedback-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
     background: #333;
     color: white;
-    border: none;
+    padding: 14px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: bold;
     cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 9999;
+    border: none;
   }
+  #feedback-btn:hover { background: #555; }
 </style>
 
 </head>
@@ -129,28 +118,6 @@
 </div>
 
 <div id="search-results"></div>
-
-<!-- Missing City + Feedback Box -->
-<div id="request-box">
-  <p><b>❓ City not found?</b> You can request it below:</p>
-
-  <form action="https://app.smartsheet.com/b/form/010b97732b974e3bb484f5efaddd2d82" method="POST">
-
-    <!-- Editable City Name -->
-    <label><b>City Name (editable)</b></label>
-    <input type="text" id="requestedCity" name="Requested City" required>
-
-    <!-- Optional Email -->
-    <label><b>Your Email (optional)</b></label>
-    <input type="email" name="Email">
-
-    <!-- Feedback / Feature Request -->
-    <label><b>Feedback / Feature Request</b></label>
-    <textarea name="Feedback" rows="4" placeholder="Tell us what you need..."></textarea>
-
-    <button type="submit">Submit Request</button>
-  </form>
-</div>
 
 <div class="clock-container">
   <div class="clock"><h3>India (IST)</h3><input type="date" id="ist-date"><input type="time" id="ist-time"></div>
@@ -171,6 +138,12 @@
     Note: Not all time zones observe DST (e.g., AST, HST, AKST). Please adjust accordingly.
   </p>
 </div>
+
+<!-- Floating Button -->
+<button id="feedback-btn"
+        onclick="window.open('https://app.smartsheet.com/b/form/010b97732b974e3bb484f5efaddd2d82','_blank')">
+  ✨ Feedback / Request City
+</button>
 
 <script>
 /* TIME ZONE CALCULATOR — unchanged */
@@ -218,7 +191,7 @@ for(let tz in timeZones){
   updateAll("ist",`${y}-${m}-${d}`,`${h}:${mn}`);
 })();
 
-/* CITY SEARCH — modified to show request box */
+/* CITY SEARCH — unchanged except result list */
 const cityTimeZones={
   "Albuquerque":"America/Denver","Aurora":"America/Denver","Austin":"America/Chicago",
   "Bayamon":"America/Puerto_Rico","Beltsville":"America/New_York","Bellevue":"America/Los_Angeles",
@@ -249,31 +222,18 @@ const cityTimeZones={
 };
 
 document.getElementById("city-search").addEventListener("input",function(){
-  const query=this.value.trim().toLowerCase();
+  const q=this.value.trim().toLowerCase();
   const results=document.getElementById("search-results");
-  const box=document.getElementById("request-box");
-  const cityField=document.getElementById("requestedCity");
-
   results.innerHTML="";
-  if(query.length===0){ box.style.display="none"; return; }
-
-  let match=false;
+  if(q.length===0) return;
 
   for(let city in cityTimeZones){
-    if(city.toLowerCase().includes(query)){
-      match=true;
+    if(city.toLowerCase().includes(q)){
       const div=document.createElement("div");
       div.className="search-result";
       div.innerHTML=`📍 <b>${city}</b>`;
       results.appendChild(div);
     }
-  }
-
-  if(!match){
-    box.style.display="block";
-    cityField.value=query;  // autofill but editable
-  } else {
-    box.style.display="none";
   }
 });
 </script>
